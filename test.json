@@ -2,12 +2,36 @@
   "log": {
     "level": "debug"
   },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns-out",
+        "address": "tls://9.9.9.9"
+      }
+    ]
+  },
   "inbounds": [
     {
-      "type": "mixed",
-      "listen": "::",
-      "listen_port": 10000,
-      "set_system_proxy": true
+      "type": "tun",
+      "tag": "tun-in",
+      "inet4_address": "172.19.0.1/30",
+      "stack": "gvisor",
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true,
+      "sniff_override_destination": false
+    },
+    {
+      "type": "http",
+      "listen": "127.0.0.1",
+      "listen_port": 10809,
+      "tag": "http-in"
+    },
+    {
+      "type": "socks",
+      "listen": "127.0.0.1",
+      "listen_port": 10808,
+      "tag": "socks-in"
     }
   ],
   "outbounds": [
@@ -40,6 +64,22 @@
         "brutal": {}
       },
       "packet_encoding": "xudp"
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
     }
-  ]
+  ],
+  "route": {
+    "rules": [
+      {
+        "type": "field",
+        "outbound": "proxy"
+      }
+    ]
+  }
 }
