@@ -6,7 +6,7 @@
     "servers": [
       {
         "tag": "remote-dns",
-        "address": "127.0.0.1",
+        "address": "tls://1.1.1.1",
         "detour": "proxy"
       }
     ],
@@ -50,20 +50,20 @@
       "tag": "proxy",
       "server": "23.95.72.39",
       "server_port": 443,
-      "uuid": "6efa65a36dd98b99",
+      "uuid": "d256edcfe31376e2",
       "flow": "xtls-rprx-vision",
       "tls": {
         "enabled": true,
         "server_name": "www.bing.com",
-        "alpn": ["h3"],
+        "alpn": ["h3", "h2", "http/1.1"],
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "kvcH__aqYmgOoeJ28IuEx6LM4H-PVOL2csjK9bublS8",
-          "short_id": "dbdb7037c3d098ca"
+          "public_key": "4MJ6YIgtF1PnHmJzAal92X1K2QVjXdCG-8I71W0_gAY",
+          "short_id": "45e2a347da75681e"
         }
       },
       "multiplex": {
