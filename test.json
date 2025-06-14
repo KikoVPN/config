@@ -7,7 +7,12 @@
       {
         "tag": "remote-dns",
         "address": "tls://1.1.1.1",
-        "detour": "proxy"
+        "detour": "direct"
+      },
+      {
+        "tag": "local-dns",
+        "address": "172.19.0.1",
+        "detour": "dns-out"
       }
     ],
     "rules": [
@@ -24,7 +29,7 @@
     {
       "type": "tun",
       "tag": "tun-in",
-      "inet4_address": "172.19.0.1/30",
+      "inet4_address": "172.19.0.1/24",
       "stack": "gvisor",
       "auto_route": true,
       "strict_route": false,
@@ -65,13 +70,6 @@
           "public_key": "4MJ6YIgtF1PnHmJzAal92X1K2QVjXdCG-8I71W0_gAY",
           "short_id": "45e2a347da75681e"
         }
-      },
-      "multiplex": {
-        "enabled": true,
-        "protocol": "smux",
-        "max_connections": 4,
-        "padding": false,
-        "brutal": {}
       },
       "packet_encoding": "xudp"
     },
