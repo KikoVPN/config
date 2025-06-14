@@ -1,84 +1,140 @@
 {
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    }
+  },
   "log": {
-    "level": "debug"
+    "level": "info"
   },
   "dns": {
     "servers": [
       {
         "tag": "remote-dns",
-        "address": "tls://1.1.1.1",
+        "address": "tls://9.9.9.9",
         "detour": "proxy"
+      },
+      {
+        "tag": "local-dns",
+        "address": "tls://1.1.1.1",
+        "detour": "direct"
+      },
+      {
+        "tag": "fakeip-dns",
+        "address": "fakeip"
+      },
+      {
+        "tag": "block-dns",
+        "address": "rcode://success"
       }
     ],
     "rules": [
       {
         "outbound": "any",
         "server": "remote-dns"
+      },
+      {
+        "rule_set": [],
+        "rewrite_ttl": 1,
+        "server": "fakeip-dns"
+      },
+      {
+        "domain": [
+          "vps18.alrab.xyz"
+        ],
+        "server": "local-dns"
+      },
+      {
+        "rule_set": [
+          "geoip-bn",
+          "geosite-bn"
+        ],
+        "server": "local-dns"
+      },
+      {
+        "query_type": [
+          "A"
+        ],
+        "rewrite_ttl": 1,
+        "server": "fakeip-dns"
       }
     ],
     "strategy": "ipv4_only",
-    "disable_cache": false,
-    "final": "remote-dns"
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.0/15"
+    }
   },
   "inbounds": [
     {
-      "type": "tun",
-      "tag": "tun-in",
-      "inet4_address": "172.19.0.1/30",
-      "stack": "gvisor",
-      "auto_route": true,
-      "strict_route": false,
-      "sniff": true,
-      "sniff_override_destination": false
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 10810,
+      "sniff": true
     },
     {
-      "type": "http",
-      "listen": "127.0.0.1",
-      "listen_port": 10809,
-      "tag": "http-in"
-    },
-    {
-      "type": "socks",
-      "listen": "127.0.0.1",
-      "listen_port": 10808,
-      "tag": "socks-in"
+        "type": "tun",
+        "tag": "tun-in",
+        "inet4_address": "172.19.0.1/30",
+        "stack": "gvisor",
+        "auto_route": true,
+        "strict_route": false,
+        "sniff": true,
+        "sniff_override_destination": false
     }
   ],
   "outbounds": [
     {
-      "type": "hysteria2",
-      "tag": "proxy",
-      "server": "vps18.alrab.xyz",
-      "server_port": 443,
-      "up_mbps": 100,
-      "down_mbps": 100,
-      "obfs": {
-        "type": "salamander",
-        "password": "1cc6f35af9f02d3b"
-      },
-      "password": "696d0f7c122784c3e963ab80cac3e596",
-      "tls": {
-        "enabled": true,
-        "server_name": "vps18.alrab.xyz",
-        "alpn": ["h3", "h2", "http/1.1"],
-        "insecure": false
-      }
+        "type": "hysteria2",
+        "tag": "proxy",
+        "server": "vps18.alrab.xyz",
+        "server_port": 443,
+        "up_mbps": 100,
+        "down_mbps": 100,
+        "obfs": {
+            "type": "salamander",
+            "password": "1cc6f35af9f02d3b"
+        },
+        "password": "696d0f7c122784c3e963ab80cac3e596",
+        "tls": {
+            "enabled": true,
+            "server_name": "vps18.alrab.xyz",
+            "alpn": ["h3", "h2", "http/1.1"],
+            "insecure": false
+        }
     },
     {
       "type": "direct",
       "tag": "direct"
     },
     {
-      "type": "block",
-      "tag": "block"
-    },
-    {
       "type": "dns",
       "tag": "dns-out"
+    },
+    {
+      "type": "block",
+      "tag": "block"
     }
   ],
   "route": {
-    "auto_detect_interface": true,
+    "rule_set": [
+      {
+        "type": "remote",
+        "format": "binary",
+        "tag": "geoip-bn",
+        "url": "https://github.com/SagerNet/sing-geoip/releases/download/20250612/geoip.db",
+        "download_detour": "proxy"
+      },
+      {
+        "type": "remote",
+        "format": "binary",
+        "tag": "geosite-bn",
+        "url": "https://github.com/SagerNet/sing-geosite/releases/download/20250608120644/geosite.db",
+        "download_detour": "proxy"
+      }
+    ],
     "rules": [
       {
         "protocol": "dns",
@@ -89,22 +145,45 @@
         "outbound": "dns-out"
       },
       {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "network": "udp",
+            "port": 443
+          },
+          {
+            "protocol": "stun"
+          }
+        ],
+        "outbound": "block"
+      },
+      {
         "package_name": "com.softzium.kikovpn",
         "outbound": "proxy"
       },
       {
-        "domain": ["geosite:category-ads-all"],
+        "rule_set": [
+          "geosite:category-ads-all"
+        ],
         "outbound": "block"
       },
       {
-        "ip_cidr": [
-          "192.168.0.0/16",
-          "10.0.0.0/8",
-          "172.16.0.0/12"
+        "ip_is_private": true,
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "geoip-bn",
+          "geosite-bn"
         ],
         "outbound": "direct"
       }
     ],
+    "auto_detect_interface": true,
     "final": "proxy"
   }
 }
