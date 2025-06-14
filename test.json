@@ -17,6 +17,10 @@
     ],
     "rules": [
       {
+        "outbound": "dns-out",
+        "server": "local-dns"
+      },
+      {
         "outbound": "any",
         "server": "remote-dns"
       }
