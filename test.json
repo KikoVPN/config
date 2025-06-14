@@ -8,21 +8,12 @@
         "tag": "remote-dns",
         "address": "127.0.0.1",
         "detour": "proxy"
-      },
-      {
-        "tag": "local-dns",
-        "address": "tls://9.9.9.9",
-        "detour": "direct"
       }
     ],
     "rules": [
       {
-        "ip_is_private": true,
-        "server": "local-dns"
-      },
-      {
-        "domain": "www.bing.com",
-        "server": "local-dns"
+        "outbound": "any",
+        "server": "remote-dns"
       }
     ],
     "strategy": "ipv4_only",
@@ -117,7 +108,11 @@
         "outbound": "block"
       },
       {
-        "ip_is_private": true,
+        "ip_cidr": [
+          "192.168.0.0/16",
+          "10.0.0.0/8",
+          "172.16.0.0/12"
+        ],
         "outbound": "direct"
       }
     ],
