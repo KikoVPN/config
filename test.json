@@ -121,14 +121,26 @@
     "rule_set": [
       {
         "type": "remote",
-        "format": "binary",
-        "url": "https://github.com/SagerNet/sing-geoip/releases/download/20250612/geoip.db",
+        "tag": "geoip-cn",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
         "download_detour": "proxy"
       },
       {
         "type": "remote",
-        "format": "binary",
-        "url": "https://github.com/SagerNet/sing-geosite/releases/download/20250608120644/geosite.db",
+        "tag": "geosite-cn",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "proxy"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-ir",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ir.srs",
+        "download_detour": "proxy"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-ir",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-ir.srs",
         "download_detour": "proxy"
       }
     ],
