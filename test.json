@@ -7,7 +7,7 @@
       {
         "tag": "remote-dns",
         "address": "tls://1.1.1.1",
-        "detour": "direct"
+        "detour": "proxy"
       }
     ],
     "rules": [
@@ -24,7 +24,7 @@
     {
       "type": "tun",
       "tag": "tun-in",
-      "inet4_address": "172.19.0.1/24",
+      "inet4_address": "172.19.0.1/30",
       "stack": "gvisor",
       "auto_route": true,
       "strict_route": false,
@@ -35,56 +35,34 @@
       "type": "http",
       "listen": "127.0.0.1",
       "listen_port": 10809,
-      "auto_route": true,
-      "strict_route": false,
-      "sniff": true,
-      "sniff_override_destination": false,
       "tag": "http-in"
     },
     {
       "type": "socks",
       "listen": "127.0.0.1",
       "listen_port": 10808,
-      "auto_route": true,
-      "strict_route": false,
-      "sniff": true,
-      "sniff_override_destination": false,
       "tag": "socks-in"
-    },
-    {
-      "type": "direct",
-      "listen": "127.0.0.1",
-      "listen_port": 53,
-      "auto_route": true,
-      "strict_route": false,
-      "sniff": true,
-      "sniff_override_destination": false,
-      "tag": "dns-in"
     }
   ],
   "outbounds": [
     {
-      "type": "vless",
+      "type": "hysteria2",
       "tag": "proxy",
-      "server": "23.95.72.39",
+      "server": "vps18.alrab.xyz",
       "server_port": 443,
-      "uuid": "d256edcfe31376e2",
-      "flow": "xtls-rprx-vision",
+      "up_mbps": 100,
+      "down_mbps": 100,
+      "obfs": {
+        "type": "salamander",
+        "password": "1cc6f35af9f02d3b"
+      },
+      "password": "696d0f7c122784c3e963ab80cac3e596",
       "tls": {
         "enabled": true,
-        "server_name": "www.bing.com",
+        "server_name": "vps18.alrab.xyz",
         "alpn": ["h3", "h2", "http/1.1"],
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "4MJ6YIgtF1PnHmJzAal92X1K2QVjXdCG-8I71W0_gAY",
-          "short_id": "45e2a347da75681e"
-        }
-      },
-      "packet_encoding": "xudp"
+        "insecure": false
+      }
     },
     {
       "type": "direct",
@@ -109,23 +87,6 @@
       {
         "port": 53,
         "outbound": "dns-out"
-      },
-      {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "port": 853
-          },
-          {
-            "network": "udp",
-            "port": 443
-          },
-          {
-            "protocol": "stun"
-          }
-        ],
-        "outbound": "block"
       },
       {
         "package_name": "com.softzium.kikovpn",
