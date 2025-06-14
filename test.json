@@ -2,33 +2,6 @@
   "log": {
     "level": "debug"
   },
-  "dns": {
-    "servers": [
-      {
-        "tag": "remote-dns",
-        "address": "127.0.0.1",
-        "detour": "proxy"
-      },
-      {
-        "tag": "local-dns",
-        "address": "tls://9.9.9.9",
-        "detour": "direct"
-      }
-    ],
-    "rules": [
-      {
-        "ip_is_private": true,
-        "server": "local-dns"
-      },
-      {
-        "domain": "www.bing.com",
-        "server": "local-dns"
-      }
-    ],
-    "strategy": "ipv4_only",
-    "disable_cache": false,
-    "final": "remote-dns"
-  },
   "inbounds": [
     {
       "type": "tun",
@@ -71,32 +44,6 @@
         "brutal": {}
       },
       "packet_encoding": "xudp"
-    },
-    {
-      "type": "direct",
-      "tag": "direct"
-    },
-    {
-      "type": "block",
-      "tag": "block"
     }
-  ],
-  "route": {
-    "auto_detect_interface": true,
-    "rules": [
-      {
-        "package_name": "com.softzium.kikovpn",
-        "outbound": "proxy"
-      },
-      {
-        "domain": ["geosite:category-ads-all"],
-        "outbound": "block"
-      },
-      {
-        "ip_is_private": true,
-        "outbound": "direct"
-      }
-    ],
-    "final": "proxy"
-  }
+  ]
 }
