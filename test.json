@@ -38,8 +38,10 @@
       },
       {
         "rule_set": [
-          "geoip-bn",
-          "geosite-bn"
+          "geoip-cn",
+          "geoip-ir",
+          "geosite-cn",
+          "geosite-ir"
         ],
         "server": "local-dns"
       },
@@ -120,14 +122,12 @@
       {
         "type": "remote",
         "format": "binary",
-        "tag": "geoip-bn",
         "url": "https://github.com/SagerNet/sing-geoip/releases/download/20250612/geoip.db",
         "download_detour": "proxy"
       },
       {
         "type": "remote",
         "format": "binary",
-        "tag": "geosite-bn",
         "url": "https://github.com/SagerNet/sing-geosite/releases/download/20250608120644/geosite.db",
         "download_detour": "proxy"
       }
@@ -174,8 +174,10 @@
       },
       {
         "rule_set": [
-          "geoip-bn",
-          "geosite-bn"
+          "geoip-cn",
+          "geoip-ir",
+          "geosite-cn",
+          "geosite-ir"
         ],
         "outbound": "direct"
       }
