@@ -8,18 +8,9 @@
         "tag": "remote-dns",
         "address": "tls://1.1.1.1",
         "detour": "direct"
-      },
-      {
-        "tag": "local-dns",
-        "address": "172.19.0.1",
-        "detour": "dns-out"
       }
     ],
     "rules": [
-      {
-        "outbound": "dns-out",
-        "server": "local-dns"
-      },
       {
         "outbound": "any",
         "server": "remote-dns"
@@ -44,13 +35,31 @@
       "type": "http",
       "listen": "127.0.0.1",
       "listen_port": 10809,
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true,
+      "sniff_override_destination": false,
       "tag": "http-in"
     },
     {
       "type": "socks",
       "listen": "127.0.0.1",
       "listen_port": 10808,
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true,
+      "sniff_override_destination": false,
       "tag": "socks-in"
+    },
+    {
+      "type": "direct",
+      "listen": "127.0.0.1",
+      "listen_port": 53,
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true,
+      "sniff_override_destination": false,
+      "tag": "dns-in"
     }
   ],
   "outbounds": [
@@ -100,6 +109,23 @@
       {
         "port": 53,
         "outbound": "dns-out"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "network": "udp",
+            "port": 443
+          },
+          {
+            "protocol": "stun"
+          }
+        ],
+        "outbound": "block"
       },
       {
         "package_name": "com.softzium.kikovpn",
