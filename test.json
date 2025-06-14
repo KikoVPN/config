@@ -39,18 +39,6 @@
       "strict_route": false,
       "sniff": true,
       "sniff_override_destination": false
-    },
-    {
-      "type": "http",
-      "listen": "127.0.0.1",
-      "listen_port": 10809,
-      "tag": "http-in"
-    },
-    {
-      "type": "socks",
-      "listen": "127.0.0.1",
-      "listen_port": 10808,
-      "tag": "socks-in"
     }
   ],
   "outbounds": [
@@ -83,14 +71,6 @@
         "brutal": {}
       },
       "packet_encoding": "xudp"
-    },
-    {
-      "type": "direct",
-      "tag": "direct"
-    },
-    {
-      "type": "block",
-      "tag": "block"
     }
   ],
   "route": {
