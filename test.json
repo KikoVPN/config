@@ -6,7 +6,8 @@
     {
       "type": "mixed",
       "listen": "::",
-      "listen_port": 10000
+      "listen_port": 10000,
+      "set_system_proxy": true
     }
   ],
   "outbounds": [
