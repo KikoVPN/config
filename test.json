@@ -12,7 +12,7 @@
     "servers": [
       {
         "tag": "remote-dns",
-        "address": "tls://9.9.9.9",
+        "address": "127.0.0.1",
         "detour": "proxy"
       },
       {
@@ -94,9 +94,9 @@
         "down_mbps": 100,
         "obfs": {
             "type": "salamander",
-            "password": "1cc6f35af9f02d3b"
+            "password": "e0c1f6751dfbb8cb"
         },
-        "password": "696d0f7c122784c3e963ab80cac3e596",
+        "password": "2f7e30af2f3616f3bd169fb193efe0da",
         "tls": {
             "enabled": true,
             "server_name": "vps18.alrab.xyz",
