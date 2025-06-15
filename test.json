@@ -32,7 +32,7 @@
     "rules": [
       {
         "domain": [
-          "vps18.alrab.xyz"
+          "www.bing.com"
         ],
         "server": "local-dns"
       },
@@ -74,35 +74,39 @@
       "sniff": true
     },
     {
-        "type": "tun",
-        "tag": "tun-in",
-        "inet4_address": "172.19.0.1/30",
-        "stack": "gvisor",
-        "auto_route": true,
-        "strict_route": false,
-        "sniff": true,
-        "sniff_override_destination": false
+      "type": "tun",
+      "tag": "tun-in",
+      "inet4_address": "172.19.0.1/30",
+      "stack": "gvisor",
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true,
+      "sniff_override_destination": false
     }
   ],
   "outbounds": [
     {
-        "type": "hysteria2",
-        "tag": "proxy",
-        "server": "vps18.alrab.xyz",
-        "server_port": 443,
-        "up_mbps": 100,
-        "down_mbps": 100,
-        "obfs": {
-            "type": "salamander",
-            "password": "e0c1f6751dfbb8cb"
+      "type": "vless",
+      "tag": "proxy",
+      "server": "23.95.72.39",
+      "server_port": 443,
+      "uuid": "1a2aaa1e9194ba4b",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.bing.com",
+        "alpn": ["h3", "h2", "http/1.1"],
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
         },
-        "password": "2f7e30af2f3616f3bd169fb193efe0da",
-        "tls": {
-            "enabled": true,
-            "server_name": "vps18.alrab.xyz",
-            "alpn": ["h3", "h2", "http/1.1"],
-            "insecure": false
+        "reality": {
+          "enabled": true,
+          "public_key": "8HD8fh5ksoFnndQksJsoiRUutu14j5Ave4CIxsF73BY",
+          "short_id": "8f4d6a47440b1a42"
         }
+      },
+      "packet_encoding": "xudp"
     },
     {
       "type": "direct",
